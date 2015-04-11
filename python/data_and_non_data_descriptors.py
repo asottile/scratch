@@ -16,8 +16,8 @@ class AlsoNonDataDescriptor(object):
     def __get__(self, obj, owner):
         return '__get__ from {0!r}'.format(obj)
 
-    def __del__(self, obj):
-        print('got __del__ from {0}'.format(obj))
+    def __delete__(self, obj):
+        print('got __delete__ from {0}'.format(obj))
 
 
 class Foo(object):
