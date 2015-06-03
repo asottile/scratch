@@ -1,0 +1,29 @@
+## Here is an example for Python.
+##
+syntax "cheetah" "\.tmpl$"
+
+# function names
+icolor brightblue "#def [0-9A-Z_]+"
+
+# blocks
+color brightcyan "#(end )?(block|call|compiler-settings|def|filter|for|if|inline_script|try|while|with)#?"
+
+# keywords
+color brightcyan "#(assert|attr|break|compiler-settings|continue|del|elif|else|except|extends|filter|finally|from|inline_script|implements|import|pass|raise|return|set|silent|slurp|super|try|while|with|yield)"
+color brightcyan "\<(and|as|import|not|or)\>"
+
+# decorators
+color brightcyan "^#@.*$"
+
+# strings
+color brightgreen "['][^']*[^\\][']" "[']{3}.*[^\\][']{3}"
+color brightgreen "["][^"]*[^\\]["]" "["]{3}.*[^\\]["]{3}"
+color brightgreen start=""""[^"]" end=""""" start="'''[^']" end="'''"
+
+# comments
+color brightred "^\s*##.*$"
+
+# deprecated things
+color black,red "\$(attrs|ycon|ycon_wrap|ybutton)\(" "\$self.(attrs|ycon|ycon_wrap|ybutton)\("
+color black,red "#call [$]?self.[a-z_]+"
+
