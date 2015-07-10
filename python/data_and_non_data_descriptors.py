@@ -12,7 +12,7 @@ class DataDescriptor(object):
         print('got __set__ for value')
 
 
-class AlsoNonDataDescriptor(object):
+class AlsoDataDescriptor(object):
     def __get__(self, obj, owner):
         return '__get__ from {0!r}'.format(obj)
 
@@ -29,7 +29,7 @@ class Bar(object):
 
 
 class Baz(object):
-    x = AlsoNonDataDescriptor()
+    x = AlsoDataDescriptor()
 
 
 x = Foo()
