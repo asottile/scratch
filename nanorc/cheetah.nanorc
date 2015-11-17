@@ -10,7 +10,7 @@ color brightcyan "#(end )?(block|call|compiler-settings|def|filter|for|if|inline
 
 # keywords
 color brightcyan "#(assert|attr|break|compiler-settings|continue|del|elif|else|except|extends|filter|finally|from|implements|import|pass|py|raise|return|set|silent|slurp|super|try|while|with|yield)"
-color brightcyan "\<(and|as|import|not|or)\>"
+color brightcyan "\<(and|as|for|import|in|not|or)\>"
 
 # decorators
 color brightcyan "^#@.*$"
