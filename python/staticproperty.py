@@ -1,6 +1,7 @@
 class staticproperty(object):
     def __init__(self, fget):
         self.fget = fget
+
     def __get__(self, obj, owner):
         return staticmethod(self.fget).__get__(None, owner)()
 
