@@ -13,4 +13,5 @@ fi
 
 export PIP_DOWNLOAD_CACHE=/home/asottile/.pip/cache
 export PYTHONSTARTUP=~/.pythonrc.py
-
+export EDITOR=nano
+export VISUAL=nano
