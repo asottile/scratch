@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<body>
+<canvas class="pie" width="800" height="400"></canvas>
+<script>
+(function () {
+    var i = 0, length = 0, radEnd = 0, radStart = 0, label = '',
+        legendStart = 10,
+        canvas = document.querySelector('.pie'),
+        ctx = canvas.getContext('2d');
+        data = [100, 15, 3, 1],
+        colors = ['#f00', '#0f0', '#00f', '#ff0'],
+        labels = ['foo', 'bar', 'baz', 'womp'],
+        sum = data.reduce(function (x, y) { return x + y }),
+        rads = data.map(function (val) { return 2 * Math.PI * val / sum }),
+        radius = canvas.height / 2;
+
+    ctx.font = '20px monospace';
+
+    for (i = 0, length = data.length; i < length; i += 1) {
+        radEnd = radStart + rads[i];
+
+        // Draw the pie slice
+        ctx.beginPath();
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius, radStart, radEnd, false);
+        ctx.closePath();
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+        radStart = radEnd;
+
+        // And the box for the legend
+        ctx.fillRect(radius * 2 + 10, legendStart, 20, 20);
+
+        ctx.fillStyle = '#000';
+
+        // Put an outline around the legend boxes and pie slices
+        ctx.rect(radius * 2 + 10, legendStart, 20, 20);
+        ctx.stroke();
+
+        // Write the label
+        label = (
+            (100 * data[i] / sum).toFixed(2).toString(10) + '%' +
+            ' (' + data[i] + ')' +
+            ' ' + labels[i]
+        );
+        ctx.fillText(label, radius * 2 + 35, legendStart + 17);
+        legendStart += 25;
+    }
+}());
+</script>
+</html>
