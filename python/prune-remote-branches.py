@@ -1,7 +1,7 @@
 #!/usr/bin/env python3.4
 import argparse
 import subprocess
-import sys
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -9,7 +9,9 @@ def main():
     parser.add_argument('--remote', default='origin')
     args = parser.parse_args()
 
-    remotes = subprocess.check_output(('git', 'remote')).decode('UTF-8').splitlines()
+    remotes = subprocess.check_output(
+        ('git', 'remote')
+    ).decode('UTF-8').splitlines()
     if 'canon' in remotes:
         upstream = 'canon'
     elif 'upstream' in remotes:

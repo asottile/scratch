@@ -5,4 +5,3 @@ if __name__ == '__main__':
             s[x].upper() if (1 << x & i) else s[x]
             for x in range(len(s))
         ]))
-
