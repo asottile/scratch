@@ -3,6 +3,8 @@ set nowrap
 set tabsize 4
 set tabstospaces
 
+unbind ^J main
+
 include ~/nanorc/python.nanorc
 include ~/nanorc/cheetah.nanorc
 
