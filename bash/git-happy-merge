@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+RED="\e[41m"
+GREEN="\e[42m"
+NORMAL="\e[0m"
+
+if [ $# -ne 1 ]; then
+    echo "Usage $0 BRANCH_TO_TEST_MERGING"
+    exit 1
+fi
+
+git merge --no-ff --no-commit $@
+retv=$?
+git merge --abort
+
+if [ $retv -eq 0 ]; then
+    echo -e "$GREEN"'Merges fine'"$NORMAL"
+    exit 0
+else
+    echo -e $RED'Does not merge fine'$NORMAL
+    exit 1
+fi
