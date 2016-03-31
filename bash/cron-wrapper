@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Wrapper around a command.  Only prints the output of the command if the
+# return value is nonzero
+
+output=$("$@" 2>&1)
+ret=$?
+if [ $ret -ne 0 ]
+then
+    echo "$output"
+    exit "$ret"
+fi
+
