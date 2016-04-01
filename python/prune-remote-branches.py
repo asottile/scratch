@@ -32,7 +32,7 @@ def main():
         'git branch --remote --merged {upstream}/master | '
         'grep {remote}/ | '
         "cut -d'/' -f2-999 | "
-        "grep -Ev '^(PLACEHOLDER|master|stage|production|paasta)' | "
+        "grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
         "grep -v '>' | "
         "xargs --replace -P 8 {dryrun}git push {remote} :{{}}".format(
             upstream=upstream, dryrun=dry_run, remote=args.remote,
