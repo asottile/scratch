@@ -18,7 +18,7 @@ def tempdir():
         shutil.rmtree(tmpdir)
 
 
-EXCLUDE = ('pip',)
+EXCLUDE = ('pip', 'wsgiref')
 
 
 @contextlib.contextmanager
