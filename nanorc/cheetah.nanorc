@@ -1,5 +1,3 @@
-## Here is an example for Python.
-##
 syntax "cheetah" "\.tmpl$"
 
 # function names
@@ -22,8 +20,3 @@ color brightgreen start=""""[^"]" end=""""" start="'''[^']" end="'''"
 
 # comments
 color brightred "^\s*##.*$"
-
-# deprecated things
-color black,red "\$(attrs|ycon|ycon_wrap|ybutton)\(" "\$self.(attrs|ycon|ycon_wrap|ybutton)\("
-color black,red "#call [$]?self.[a-z_]+"
-
