@@ -48,7 +48,7 @@ def main():
         "grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
         "grep -v '>' | "
         "xargs --replace -P 8 {dryrun}git push {remote} :{{}}".format(
-            upstream=upstream, dryrun=dry_run, remote=args.remote,
+            upstream=upstream, dryrun=dry_run, remote=remote,
         )
     ))
 
