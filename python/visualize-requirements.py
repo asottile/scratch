@@ -24,7 +24,7 @@ def get_raw_requirements(requirements_file):
     unparsed_requirements_lines = get_lines_from_file(requirements_file)
 
     return pkg_resources.parse_requirements(
-        '\n'.join(unparsed_requirements_lines) 
+        '\n'.join(unparsed_requirements_lines)
     )
 
 
