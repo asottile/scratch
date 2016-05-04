@@ -2,6 +2,7 @@ set casesensitive
 set nowrap
 set tabsize 4
 set tabstospaces
+set regexp
 
 unset locking
 unbind ^J main
