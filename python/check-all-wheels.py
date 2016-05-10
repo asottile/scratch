@@ -44,7 +44,7 @@ def main():
 
     with upgraded_pip('pip'):
         silent('pip', 'install', '-i', args.index_url, args.install_deps)
-        cmd = args.pip_tool.split(' ') + (
+        cmd = tuple(args.pip_tool.split(' ')) + (
             'install', '--download', DISTS_DIR,
             '-r', 'requirements.txt', '-r', 'requirements-dev.txt',
             '-i', args.index_url,
