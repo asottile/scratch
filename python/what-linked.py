@@ -31,7 +31,7 @@ def get_shared_objects(pkg):
 def get_uninteresting_links():
     # This is auto-linked always
     uninteresting = {'linux-vdso.so.1'}
-    for pkg in ('libc6', 'libstdc++6'):
+    for pkg in ('libc6', 'libstdc++6', 'libgcc1'):
         uninteresting.update(get_shared_objects(pkg))
     return uninteresting
 
