@@ -31,6 +31,8 @@ def main():
     parser.add_argument(
         '-i', '--index-url', default='https://pypi.python.org/simple',
     )
+    parser.add_argument('--pip-tool', default='pip')
+    parser.add_argument('--install-deps', default='pip')
     args = parser.parse_args()
 
     assert os.path.exists('requirements.txt')
@@ -41,11 +43,13 @@ def main():
     os.makedirs(DISTS_DIR)
 
     with upgraded_pip('pip'):
-        silent(
-            'pip', 'install', '--download', DISTS_DIR,
+        silent('pip', 'install', '-i', args.index_url, args.install_deps)
+        cmd = args.pip_tool.split(' ') + (
+            'install', '--download', DISTS_DIR,
             '-r', 'requirements.txt', '-r', 'requirements-dev.txt',
             '-i', args.index_url,
         )
+        silent(*cmd)
     ret = 0
     for filename in os.listdir(DISTS_DIR):
         if not filename.endswith('.whl'):
