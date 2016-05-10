@@ -3,6 +3,7 @@ import argparse
 import contextlib
 import os.path
 import shutil
+import string
 import subprocess
 import sys
 import tempfile
@@ -64,6 +65,14 @@ def from_where(filename):
 
 
 def dev_pkg(dpkg):
+    # first guess
+    try:
+        return out(
+            'apt-cache', 'search',
+            '^{}.*-dev$'.format(dpkg.rstrip(string.digits + '-' + '.')),
+        ).split()[0]
+    except IndexError:
+        pass
     try:
         output = out('apt-cache', 'rdepends', dpkg)
         return ', '.join(sorted(set(
