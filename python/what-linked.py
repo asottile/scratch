@@ -98,8 +98,13 @@ def main():
             if not linked:
                 print('(nothing interesting)')
             else:
-                for pkg in sorted(linked):
-                    print('- {} ({})'.format(pkg, from_where(pkg)))
+                for link in sorted(linked):
+                    if link.startswith(download):
+                        print('  - {} (linked internally)'.format(
+                            os.path.relpath(link, download),
+                        ))
+                    else:
+                        print('  - {} ({})'.format(link, from_where(link)))
 
 
 if __name__ == '__main__':
