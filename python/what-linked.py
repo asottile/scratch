@@ -51,7 +51,7 @@ def parse_ldd_output(output):
 def get_shared_object_filenames(dirname):
     for dirpath, _, filenames in os.walk(dirname):
         for filename in filenames:
-            if filename.endswith('.so'):
+            if filename.endswith('.so') or '.so.' in filename:
                 yield os.path.join(dirpath, filename)
 
 
