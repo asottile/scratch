@@ -69,7 +69,7 @@ def dev_pkg(dpkg):
     try:
         return out(
             'apt-cache', 'search',
-            '^{}.*-dev$'.format(dpkg.rstrip(string.digits + '-' + '.')),
+            '^{}[0-9.-]*-dev$'.format(dpkg.rstrip(string.digits + '-' + '.')),
         ).split()[0]
     except IndexError:
         pass
