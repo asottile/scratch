@@ -63,6 +63,18 @@ def from_where(filename):
         return '<<unknown>>'
 
 
+def dev_pkg(dpkg):
+    try:
+        output = out('apt-cache', 'rdepends', dpkg)
+        return ', '.join(sorted(set(
+            line.strip()
+            for line in output.splitlines()
+            if line.strip().endswith('-dev')
+        ))) or '<<unknown>>'
+    except subprocess.CalledProcessError:
+        return '<<unknown>>'
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--python', default=sys.executable)
@@ -104,7 +116,9 @@ def main():
                             os.path.relpath(link, download),
                         ))
                     else:
-                        print('  - {} ({})'.format(link, from_where(link)))
+                        dpkg = from_where(link)
+                        dev = dev_pkg(dpkg)
+                        print('  - {} ({}) (try: {})'.format(link, dpkg, dev))
 
 
 if __name__ == '__main__':
