@@ -49,11 +49,16 @@ def parse_ldd_output(output):
         yield after or before
 
 
-def get_shared_object_filenames(dirname):
+def get_linked_filenames(dirname):
     for dirpath, _, filenames in os.walk(dirname):
         for filename in filenames:
-            if filename.endswith('.so') or '.so.' in filename:
-                yield os.path.join(dirpath, filename)
+            full_path = os.path.join(dirpath, filename)
+            if not subprocess.call(
+                    ('ldd', full_path),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+            ):
+                yield full_path
 
 
 def from_where(filename):
@@ -112,7 +117,7 @@ def main():
         )
         out('unzip', os.listdir(download)[0], cwd=download)
 
-        for filename in get_shared_object_filenames(download):
+        for filename in get_linked_filenames(download):
             print(os.path.relpath(filename, download))
             ldd_output = out('ldd', filename)
             linked = set(parse_ldd_output(ldd_output)) - uninteresting_links
