@@ -55,7 +55,7 @@ def main():
         'bash', '-c',
         'git branch --merged {upstream}/master | '
         'grep -v master | '
-        'xargs --no-run-if-empty {dry_run}git branch -d'.format(
+        'xargs --no-run-if-empty {dry_run}git branch --delete'.format(
             upstream=upstream, dry_run=dry_run,
         ),
     ))
