@@ -47,9 +47,17 @@ def main():
         "cut -d'/' -f2-999 | "
         "grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
         "grep -v '>' | "
-        "xargs --replace -P 8 {dryrun}git push {remote} :{{}}".format(
-            upstream=upstream, dryrun=dry_run, remote=remote,
+        "xargs --replace -P 8 {dry_run}git push {remote} :{{}}".format(
+            upstream=upstream, dry_run=dry_run, remote=remote,
         )
+    ))
+    subprocess.check_call((
+        'bash', '-c',
+        'git branch --merged {upstream}/master | '
+        'grep -v master | '
+        'xargs --no-run-if-empty {dry_run}git branch -d'.format(
+            upstream=upstream, dry_run=dry_run,
+        ),
     ))
 
 if __name__ == '__main__':
