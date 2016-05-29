@@ -54,7 +54,7 @@ def main():
     subprocess.check_call((
         'bash', '-c',
         'git branch --merged {upstream}/master | '
-        'grep -v master | '
+        "grep -Ev '(\*|master)' | "
         'xargs --no-run-if-empty {dry_run}git branch --delete'.format(
             upstream=upstream, dry_run=dry_run,
         ),
