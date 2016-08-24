@@ -45,7 +45,7 @@ def main():
     with upgraded_pip('pip'):
         silent('pip', 'install', '-i', args.index_url, args.install_deps)
         cmd = tuple(args.pip_tool.split(' ')) + (
-            'install', '--download', DISTS_DIR,
+            'download', '--dest', DISTS_DIR,
             '-r', 'requirements.txt', '-r', 'requirements-dev.txt',
             '-i', args.index_url,
         )
@@ -55,6 +55,8 @@ def main():
         if not filename.endswith('.whl'):
             ret = 1
             print(os.path.join(DISTS_DIR, filename))
+    if ret == 0:
+        shutil.rmtree(DISTS_DIR)
     return ret
 
 
