@@ -63,6 +63,13 @@ def main():
 
         subprocess.check_call(('virtualenv', venv, '-p', args.python))
 
+        # Uninstall wheel, it'll be installed later if it is actually used
+        with open(os.devnull, 'w') as devnull:
+            subprocess.call(
+                (pip, 'uninstall', 'wheel', '-y'),
+                stdout=devnull, stderr=devnull,
+            )
+
         # Use latest setuptools
         subprocess.check_call((
             pip, 'install', 'setuptools', '--upgrade', '-i', args.index_url,
