@@ -61,7 +61,9 @@ def main():
         pip = os.path.join(venv, 'bin', 'pip')
         python = os.path.join(venv, 'bin', 'python')
 
-        subprocess.check_call(('virtualenv', venv, '-p', args.python))
+        subprocess.check_call((
+            'virtualenv', venv, '-p', args.python, '--never-download',
+        ))
 
         # Uninstall wheel, it'll be installed later if it is actually used
         with open(os.devnull, 'w') as devnull:
