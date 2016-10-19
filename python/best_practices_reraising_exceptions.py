@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
 
 OUTPUT = """\
-$ python test.py 
+$ python test.py
 *******************************************************************************
 Traceback (most recent call last):
   File "test.py", line 24, in wrapper

@@ -4,7 +4,6 @@ import contextlib
 import os
 import shutil
 import subprocess
-import sys
 
 
 def silent(*cmd):
