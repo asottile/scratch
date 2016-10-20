@@ -165,7 +165,7 @@ def main():
         with open('requirements.txt', 'w') as f:
             f.write('\n'.join(reqs) + '\n')
         with open('requirements-dev.txt', 'w') as f:
-            f.write('\n'.join(reqs_dev) + '\n')
+            f.write('\n'.join(reqs_dev - reqs) + '\n')
 
         with open(os.devnull, 'w') as devnull:
             subprocess.check_call(
