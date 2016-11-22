@@ -4,10 +4,12 @@ from __future__ import unicode_literals
 
 import argparse
 import io
+import sys
 
 import pkg_resources
 
 
+color = sys.stdout.isatty()
 reqs = {pkg.key: pkg for pkg in pkg_resources.working_set}
 
 
@@ -37,15 +39,25 @@ def print_req(req, depth, seen=()):
     else:
         circular = ''
 
-    print('{} {}{}{}{}'.format(
+    if req.key not in reqs:
+        unmet = ' {}{}{}'.format(
+            '\033[41m' if color else '',
+            '(UNMET!)',
+            '\033[m' if color else ''
+        )
+    else:
+        unmet = ''
+
+    print('{} {}{}{}{}{}'.format(
         '  ' * depth + bool(depth) * ' -',
         req.key,
         '[{}]'.format(','.join(req.extras)) if req.extras else '',
         ','.join(''.join(spec) for spec in req.specs),
         circular,
+        unmet,
     ))
 
-    if circular:
+    if circular or unmet:
         return
 
     for sub_requirement in reqs[req.key].requires(req.extras):
