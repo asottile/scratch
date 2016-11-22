@@ -30,9 +30,10 @@ def get_raw_requirements(requirements_file):
 
 
 def print_req(req, depth, specs=''):
-    print('{} {}{}'.format(
+    print('{} {}{}{}'.format(
         '  ' * depth + bool(depth) * ' -',
         req.key,
+        '[{}]'.format(','.join(req.extras)) if req.extras else '',
         ','.join(''.join(spec) for spec in req.specs))
     )
     installed_req = reqs[req.key]
