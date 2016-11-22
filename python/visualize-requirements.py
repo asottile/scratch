@@ -29,16 +29,27 @@ def get_raw_requirements(requirements_file):
     )
 
 
-def print_req(req, depth, specs=''):
-    print('{} {}{}{}'.format(
+def print_req(req, depth, seen=()):
+    if req.key in seen:
+        circular = ' (circular: {})'.format(
+            '->'.join(seen[seen.index(req.key):] + (req.key,))
+        )
+    else:
+        circular = ''
+
+    print('{} {}{}{}{}'.format(
         '  ' * depth + bool(depth) * ' -',
         req.key,
         '[{}]'.format(','.join(req.extras)) if req.extras else '',
-        ','.join(''.join(spec) for spec in req.specs))
-    )
-    installed_req = reqs[req.key]
-    for sub_requirement in installed_req.requires(req.extras):
-        print_req(sub_requirement, depth + 1)
+        ','.join(''.join(spec) for spec in req.specs),
+        circular,
+    ))
+
+    if circular:
+        return
+
+    for sub_requirement in reqs[req.key].requires(req.extras):
+        print_req(sub_requirement, depth + 1, seen=seen + (req.key,))
 
 
 def main():
