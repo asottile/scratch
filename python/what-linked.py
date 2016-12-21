@@ -101,20 +101,23 @@ def main():
     uninteresting_links = get_uninteresting_links()
 
     with tmpdir() as tempdir:
-        venv = os.path.join(tempdir, 'venv')
-        pip = os.path.join(venv, 'bin', 'pip')
         download = os.path.join(tempdir, 'download')
         os.makedirs(download)
-        out('virtualenv', venv, '-p', args.python)
-        out(pip, 'install', 'pip', '--upgrade')
-        out(
-            pip, 'download',
-            '--no-deps',
-            '--dest', download,
-            '--only-binary', 'all',
-            '--index-url', args.index_url,
-            args.package,
-        )
+        if os.path.exists(args.package):
+            shutil.copy(args.package, download)
+        else:
+            venv = os.path.join(tempdir, 'venv')
+            pip = os.path.join(venv, 'bin', 'pip')
+            out('virtualenv', venv, '-p', args.python)
+            out(pip, 'install', 'pip', '--upgrade')
+            out(
+                pip, 'download',
+                '--no-deps',
+                '--dest', download,
+                '--only-binary', 'all',
+                '--index-url', args.index_url,
+                args.package,
+            )
         out('unzip', os.listdir(download)[0], cwd=download)
 
         for filename in get_linked_filenames(download):
