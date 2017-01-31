@@ -14,3 +14,8 @@ fi
 export PYTHONSTARTUP=~/.pythonrc.py
 export EDITOR=nano
 export VISUAL=nano
+
+export DEBEMAIL="asottile@umich.edu"
+export DEBFULLNAME="Anthony Sottile"
+
+export GOPATH=~/workspace/gopath/
