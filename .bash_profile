@@ -3,9 +3,6 @@ if [ "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
 fi
 
-export TOXENV=py27
-export BENCH=false
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
@@ -19,3 +16,8 @@ export DEBEMAIL="asottile@umich.edu"
 export DEBFULLNAME="Anthony Sottile"
 
 export GOPATH=~/workspace/gopath/
+
+alias grpe=grep
+alias naon=nano
+alias wtf="echo 'wtf indeed.'"
+alias cry='sh -c '"'"'echo ":'"'"'"'"'"'"'"'"'("'"'"''
