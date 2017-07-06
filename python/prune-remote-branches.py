@@ -16,8 +16,6 @@ def main():
     ).decode('UTF-8').splitlines()
     if args.upstream:
         upstream = args.upstream
-    elif 'canon' in remotes:
-        upstream = 'canon'
     elif 'upstream' in remotes:
         upstream = 'upstream'
     elif 'origin' in remotes:
