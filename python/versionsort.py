@@ -18,5 +18,6 @@ def main():
     for v in modifier(sorted(lines, key=to_key)):
         print(v)
 
+
 if __name__ == '__main__':
     exit(main())

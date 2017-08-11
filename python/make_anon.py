@@ -2,6 +2,9 @@ import os
 import random
 
 
+text_type = type(u'')
+
+
 def garbage_unicode():
     return os.urandom(10).encode('hex').decode('UTF-8')
 
@@ -23,7 +26,7 @@ def make_anon(obj):
         return garbage_int()
     elif type(obj) is float:
         return garbage_float()
-    elif type(obj) is unicode:
+    elif type(obj) is text_type:
         return garbage_unicode()
     elif type(obj) is bytes:
         return garbage_bytes()
