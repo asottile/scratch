@@ -5,3 +5,8 @@
     email = asottile@umich.edu
 [ui]
     editor = nano
+[sendemail]
+    smtpuser = asottile
+    smtpserver = smtp.mail.umich.edu
+    smtpencryption = tls
+    smtpserverport = 587
