@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5
+#!/usr/bin/env python3.6
 import argparse
 import getpass
 import subprocess
@@ -21,7 +21,7 @@ def main():
     elif 'origin' in remotes:
         upstream = 'origin'
     else:
-        raise AssertionError('Which upstream? {}'.format(remotes))
+        raise AssertionError(f'Which upstream? {remotes}')
 
     if args.dry_run:
         dry_run = 'echo '
@@ -35,27 +35,23 @@ def main():
     elif 'origin' in remotes:
         remote = 'origin'
     else:
-        raise AssertionError('Which remote? {}'.format(remotes))
+        raise AssertionError(f'Which remote? {remotes}')
 
     subprocess.check_call((
         'bash', '-c',
-        'git fetch --all --prune && '
-        'git branch --remote --merged {upstream}/master | '
-        'grep {remote}/ | '
-        "cut -d'/' -f2-999 | "
-        "grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
-        "grep -v '>' | "
-        "xargs --replace -P 8 {dry_run}git push {remote} :{{}}".format(
-            upstream=upstream, dry_run=dry_run, remote=remote,
-        )
+        f'git fetch --all --prune && '
+        f'git branch --remote --merged {upstream}/master | '
+        f'grep {remote}/ | '
+        f"cut -d'/' -f2-999 | "
+        f"grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
+        f"grep -v '>' | "
+        f"xargs --replace -P 8 {dry_run}git push {remote} :{{}}",
     ))
     subprocess.check_call((
         'bash', '-c',
-        'git branch --merged {upstream}/master | '
-        "grep -Ev '(\*|master)' | "
-        'xargs --no-run-if-empty {dry_run}git branch --delete'.format(
-            upstream=upstream, dry_run=dry_run,
-        ),
+        f'git branch --merged {upstream}/master | '
+        f"grep -Ev '(\*|master)' | "
+        f'xargs --no-run-if-empty {dry_run}git branch --delete',
     ))
 
 
