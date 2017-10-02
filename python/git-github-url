@@ -1,0 +1,25 @@
+#!/usr/bin/env python3.6
+import argparse
+import subprocess
+
+
+SSH = 'git@github.com:'
+DOT_GIT = '.git'
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.parse_args(argv)
+
+    remote = subprocess.check_output(('git', 'config', 'remote.origin.url'))
+    remote = remote.strip().decode()
+    if remote.startswith(SSH):
+        remote = remote[len(SSH):]
+    if remote.endswith(DOT_GIT):
+        remote = remote[:-1 * len(DOT_GIT)]
+
+    print(f'https://github.com/{remote}')
+
+
+if __name__ == '__main__':
+    exit(main())
