@@ -44,6 +44,7 @@ def main():
         os.remove(os.path.join(tmpdir, 'etc/hostname'))
         os.remove(os.path.join(tmpdir, 'etc/hosts'))
         os.remove(os.path.join(tmpdir, 'etc/resolv.conf'))
+        os.remove(os.path.join(tmpdir, 'var/run'))
 
         for filename in os.listdir(tmpdir):
             _docker_cp(os.path.join(tmpdir, filename), args.container + ':/')
