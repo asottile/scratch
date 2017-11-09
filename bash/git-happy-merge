@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-RED="\e[41m"
-GREEN="\e[42m"
-NORMAL="\e[0m"
+RED="\033[41m"
+GREEN="\033[42m"
+NORMAL="\033[0m"
 
 if [ $# -ne 1 ]; then
     echo "Usage $0 BRANCH_TO_TEST_MERGING"
