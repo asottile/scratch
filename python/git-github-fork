@@ -2,7 +2,6 @@
 import argparse
 import json
 import os
-import shutil
 import subprocess
 import urllib.request
 
@@ -40,7 +39,7 @@ def add_remote(slug, username):
     _, _, repo_name = slug.partition('/')
     slug = f'{username}/{repo_name}'
     cmd = ('git', 'remote', 'add', username, f'git@github.com:{slug}')
-    os.execv(shutil.which(cmd[0]), cmd)
+    os.execvp(cmd[0], cmd)
 
 
 def main(argv=None):
