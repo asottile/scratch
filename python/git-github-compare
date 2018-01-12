@@ -18,7 +18,9 @@ def main(argv=None):
     if remote.endswith(DOT_GIT):
         remote = remote[:-1 * len(DOT_GIT)]
 
-    print(f'https://github.com/{remote}')
+    cmd = ('git', 'rev-parse', '--abbrev-ref', 'HEAD')
+    branch_name = subprocess.check_output(cmd, encoding='UTF-8').strip()
+    print(f'https://github.com/{remote}/compare/{branch_name}?expand=1')
 
 
 if __name__ == '__main__':
