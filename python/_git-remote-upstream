@@ -1,0 +1,42 @@
+#!/usr/bin/env python3.6
+import argparse
+import getpass
+import json
+import subprocess
+
+
+def remote_upstream(args_remote, args_upstream):
+    cmd = ('git', 'remote')
+    remotes = subprocess.check_output(cmd, encoding='UTF-8').splitlines()
+
+    if args_remote and args_remote in remotes:
+        remote = args_remote
+    elif getpass.getuser() in remotes:
+        remote = getpass.getuser()
+    elif 'origin' in remotes:
+        remote = 'origin'
+    else:
+        raise AssertionError(f'Which remote? {remotes}')
+
+    if args_upstream and args_upstream in remotes:
+        upstream = args_upstream
+    elif 'upstream' in remotes:
+        upstream = 'upstream'
+    elif 'origin' in remotes:
+        upstream = 'origin'
+    else:
+        raise AssertionError(f'Which upstream? {remotes}')
+
+    return (remote, upstream)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--remote')
+    parser.add_argument('--upstream')
+    args = parser.parse_args(argv)
+    print(json.dumps(remote_upstream(args.remote, args.upstream)))
+
+
+if __name__ == '__main__':
+    exit(main())

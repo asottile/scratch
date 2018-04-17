@@ -1,26 +1,38 @@
 #!/usr/bin/env python3.6
 import argparse
+import json
+import os.path
 import subprocess
 
-
+HERE = os.path.dirname(os.path.realpath(__file__))
 SSH = 'git@github.com:'
 DOT_GIT = '.git'
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser()
-    parser.parse_args(argv)
+    parser.add_argument('--remote', default='')
+    parser.add_argument('--upstream', default='')
+    args = parser.parse_args(argv)
 
-    cmd = ('git', 'config', 'remote.origin.url')
-    remote = subprocess.check_output(cmd, encoding='UTF-8').strip()
-    if remote.startswith(SSH):
-        remote = remote[len(SSH):]
-    if remote.endswith(DOT_GIT):
-        remote = remote[:-1 * len(DOT_GIT)]
+    cmd = (
+        os.path.join(HERE, '_git-remote-upstream'),
+        '--remote', args.remote, '--upstream', args.upstream,
+    )
+    remote, upstream = json.loads(subprocess.check_output(cmd))
+
+    cmd = ('git', 'config', f'remote.{upstream}.url')
+    remote_url = subprocess.check_output(cmd, encoding='UTF-8').strip()
+    if remote_url.startswith(SSH):
+        remote_url = remote_url[len(SSH):]
+    if remote_url.endswith(DOT_GIT):
+        remote_url = remote_url[:-1 * len(DOT_GIT)]
 
     cmd = ('git', 'rev-parse', '--abbrev-ref', 'HEAD')
     branch_name = subprocess.check_output(cmd, encoding='UTF-8').strip()
-    print(f'https://github.com/{remote}/compare/{branch_name}?expand=1')
+    if remote != upstream:
+        branch_name = f'{remote}:{branch_name}'
+    print(f'https://github.com/{remote_url}/compare/{branch_name}?expand=1')
 
 
 if __name__ == '__main__':

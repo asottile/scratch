@@ -1,41 +1,29 @@
 #!/usr/bin/env python3.6
 import argparse
-import getpass
+import json
+import os.path
 import subprocess
+
+HERE = os.path.dirname(os.path.realpath(__file__))
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dry-run', action='store_true')
-    parser.add_argument('--remote')
-    parser.add_argument('--upstream')
+    parser.add_argument('--remote', default='')
+    parser.add_argument('--upstream', default='')
     args = parser.parse_args()
 
-    remotes = subprocess.check_output(
-        ('git', 'remote')
-    ).decode('UTF-8').splitlines()
-    if args.upstream:
-        upstream = args.upstream
-    elif 'upstream' in remotes:
-        upstream = 'upstream'
-    elif 'origin' in remotes:
-        upstream = 'origin'
-    else:
-        raise AssertionError(f'Which upstream? {remotes}')
+    cmd = (
+        os.path.join(HERE, '_git-remote-upstream'),
+        '--remote', args.remote, '--upstream', args.upstream,
+    )
+    remote, upstream = json.loads(subprocess.check_output(cmd))
 
     if args.dry_run:
         dry_run = 'echo '
     else:
         dry_run = ''
-
-    if args.remote:
-        remote = args.remote
-    elif getpass.getuser() in remotes:
-        remote = getpass.getuser()
-    elif 'origin' in remotes:
-        remote = 'origin'
-    else:
-        raise AssertionError(f'Which remote? {remotes}')
 
     subprocess.check_call((
         'bash', '-c',
