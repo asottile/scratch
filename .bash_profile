@@ -15,8 +15,6 @@ export VISUAL=nano
 export DEBEMAIL="asottile@umich.edu"
 export DEBFULLNAME="Anthony Sottile"
 
-export GOPATH=~/workspace/gopath/
-
 alias grpe=grep
 alias naon=nano
 alias wtf="echo 'wtf indeed.'"
