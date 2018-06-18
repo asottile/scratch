@@ -37,9 +37,9 @@ def main():
     ))
     subprocess.check_call((
         'bash', '-c',
-        f'git branch --merged {upstream}/master | '
-        f"grep -Ev '(\*|master)' | "
-        f'xargs --no-run-if-empty {dry_run}git branch --delete',
+        fr'git branch --merged {upstream}/master | '
+        fr"grep -Ev '(\*|master)' | "
+        fr'xargs --no-run-if-empty {dry_run}git branch --delete',
     ))
 
 

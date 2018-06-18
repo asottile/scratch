@@ -4,8 +4,8 @@ import keyword
 
 KWD = '|'.join(sorted(keyword.kwlist))
 BLT = '|'.join(sorted(x for x in dir(builtins) if x[0].islower()))
-KWDS = f'color brightcyan "\<({KWD})\>"\n'
-BLTS = f'color brightyellow "\<({BLT})\>"\n'
+KWDS = fr'color brightcyan "\<({KWD})\>"\n'
+BLTS = fr'color brightyellow "\<({BLT})\>"\n'
 
 
 def main():
