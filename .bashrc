@@ -16,8 +16,10 @@ PS1='\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\03
 [ -f /etc/bash_completion ] && . /etc/bash_completion
 
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
-
 [ -d "$HOME/bin" ] && export PATH="${HOME}/bin:${PATH}"
+
+PROMPT_COMMAND='if [ -d .git -a ! -x .git/hooks/pre-commit -a -e .pre-commit-config.yaml ] && which pre-commit >& /dev/null; then pre-commit install; fi; '"$PROMPT_COMMAND"
+eval "$(aactivator init)"
 
 export PYTHONSTARTUP=~/.pythonrc.py
 export EDITOR=nano VISUAL=nano
