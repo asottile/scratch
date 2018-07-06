@@ -92,9 +92,7 @@ def dev_pkg(dpkg):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--python', default=sys.executable)
-    parser.add_argument(
-        '-i', '--index-url', default='https://pypi.python.org/simple',
-    )
+    parser.add_argument('-i', '--index-url', default='https://pypi.org/simple')
     parser.add_argument('package')
     args = parser.parse_args()
 
@@ -114,7 +112,7 @@ def main():
                 pip, 'download',
                 '--no-deps',
                 '--dest', download,
-                '--only-binary', 'all',
+                '--only-binary', ':all:',
                 '--index-url', args.index_url,
                 args.package,
             )
