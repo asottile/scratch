@@ -1,9 +1,9 @@
 class cached_class_property(object):
     def __init__(self, fget):
-        self.fget = fget
+        self.fget = classmethod(fget)
 
     def __get__(self, obj, owner):
-        val = classmethod(self.fget).__get__(None, owner)()
+        val = self.fget.__get__(None, owner)()
         setattr(owner, self.fget.__name__, val)
         return val
 
@@ -20,10 +20,10 @@ assert Test.class_property is Test.class_property
 
 class cached_static_property(object):
     def __init__(self, fget):
-        self.fget = fget
+        self.fget = staticmethod(fget)
 
     def __get__(self, obj, owner):
-        val = staticmethod(self.fget).__get__(None, owner)()
+        val = self.fget.__get__(None, owner)()
         setattr(owner, self.fget.__name__, val)
         return val
 
