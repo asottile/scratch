@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+gsettings list-schemas | sort |
+    xargs --replace bash -c ' \
+        gsettings list-keys {} | \
+        xargs --replace=?? --verbose gsettings get {} ?? 2>&1 \
+    '
