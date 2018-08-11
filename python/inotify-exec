@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+import contextlib
+import subprocess
+import sys
+
+
+def main():
+    if '--' not in sys.argv or '-h' in sys.argv or '--help' in sys.argv:
+        print(f'usage: {sys.argv[0]} filename [filename ...] -- cmd here')
+        print('    Use {} to substitute the filename in the command')
+        print(f'example: {sys.argv[0]} test.py -- echo {{}}')
+        return 1
+
+    idx = sys.argv.index('--')
+    filenames, cmd = sys.argv[:idx], sys.argv[idx + 1:]
+
+    inotify_cmd = (
+        'inotifywait', '--monitor', '--quiet',
+        '--event', 'modify', '--format', '%w',
+        *filenames,
+    )
+    inotify = subprocess.Popen(inotify_cmd, stdout=subprocess.PIPE)
+    with contextlib.suppress(KeyboardInterrupt):
+        xargs_cmd = ('xargs', '--replace', '--delimiter=\n', *cmd)
+        xargs = subprocess.Popen(xargs_cmd, stdin=inotify.stdout)
+        xargs.wait()
+
+if __name__ == '__main__':
+    exit(main())
