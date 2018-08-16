@@ -9,4 +9,5 @@ unbind ^J main
 
 include ~/nanorc/python.nanorc
 include ~/nanorc/cheetah.nanorc
+include ~/nanorc/gitignore.nanorc
 include ~/nanorc/sls.nanorc
