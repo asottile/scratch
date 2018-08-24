@@ -25,3 +25,10 @@ export PYTHONSTARTUP=~/.pythonrc.py
 export EDITOR=nano VISUAL=nano
 
 export DEBEMAIL="asottile@umich.edu" DEBFULLNAME="Anthony Sottile"
+
+if [ -d ~/.bashrc.d ]; then
+    for f in ~/.bashrc.d/*.sh; do
+        . "$f"
+    done
+    unset f
+fi
