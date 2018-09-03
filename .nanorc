@@ -3,6 +3,7 @@ set nowrap
 set tabsize 4
 set tabstospaces
 set regexp
+set nohelp
 
 unset locking
 unbind ^J main
