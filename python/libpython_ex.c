@@ -3,7 +3,7 @@
 
 /*
  * Usage:
- * $ gcc -I/usr/include/python2.7 libpython_ex.c -o main -lpython2.7 && ./main
+ * $ gcc -I/usr/include/python3.7 libpython_ex.c -o main -lpython3.7m && ./main
  * It works!
  */
 
