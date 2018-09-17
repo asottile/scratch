@@ -18,7 +18,7 @@ color green ""(\\.|[^"])*"|'(\\.|[^'])*'"
 color yellow "\<(grain|grains|compound|pcre|grain_pcre|list|pillar)\>"
 
 # Logic keywords
-color magenta "\<(if|elif|else|or|not|and|endif|end|set|include)\>"
+color magenta "\<(end)?(do|for|if|elif|else|or|not|and|set|include)\>"
 
 # Variable substitutions
 color brightblack "\{\{[^}]*\}\}"
