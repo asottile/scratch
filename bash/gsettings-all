@@ -3,5 +3,5 @@ set -euo pipefail
 gsettings list-schemas | sort |
     xargs --replace bash -c ' \
         gsettings list-keys {} | \
-        xargs --replace=?? --verbose gsettings get {} ?? 2>&1 \
+        xargs --replace=__ --verbose gsettings get {} __ 2>&1 \
     '
