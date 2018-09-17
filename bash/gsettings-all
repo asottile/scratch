@@ -2,6 +2,6 @@
 set -euo pipefail
 gsettings list-schemas | sort |
     xargs --replace bash -c ' \
-        gsettings list-keys {} | \
+        gsettings list-keys {} | sort | \
         xargs --replace=__ --verbose gsettings get {} __ 2>&1 \
     '
