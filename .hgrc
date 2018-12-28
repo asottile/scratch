@@ -1,2 +1,5 @@
 [ui]
 username = Anthony Sottile <asottile@umich.edu>
+
+[extensions]
+purge =
