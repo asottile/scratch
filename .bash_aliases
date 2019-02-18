@@ -7,6 +7,7 @@ alias ls='ls --color=auto'
 # typos
 alias grpe=grep
 alias naon=nano
+alias babi=nano
 
 # misc
 alias wtf="echo 'wtf indeed.'"
