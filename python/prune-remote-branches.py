@@ -30,7 +30,7 @@ def main():
         f'git fetch --all --prune && '
         f'git branch --remote --merged {upstream}/master | '
         f'grep {remote}/ | '
-        f"cut -d'/' -f2-999 | "
+        f"cut -d'/' -f2- | "
         f"grep -Ev '^(PLACEHOLDER|master|stage|production)' | "
         f"grep -v '>' | "
         f"xargs --replace -P 8 {dry_run}git push {remote} :{{}}",
