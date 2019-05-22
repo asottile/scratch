@@ -18,7 +18,7 @@ def print_sheet(sheet: List[List[Any]]) -> None:
     for row in sheet:
         print('|', end='')
         for d, width in zip(row, widths):
-            print('{: >{}} |'.format(d, width), end='')
+            print('{!r: >{}} |'.format(d, width), end='')
         print()
     print('=' * (sum(widths) + len(widths) * 2 + 1))
 
