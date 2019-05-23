@@ -8,6 +8,7 @@ alias ls='ls --color=auto'
 alias grpe=grep
 alias naon=nano
 alias babi=nano
+alias chmox=chmod
 
 # misc
 alias wtf="echo 'wtf indeed.'"
