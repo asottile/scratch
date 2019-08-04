@@ -7,7 +7,7 @@ alias ls='ls --color=auto'
 # typos
 alias grpe=grep
 alias naon=nano
-alias babi=nano
+alias babi='$(which babi || echo nano)'
 alias chmox=chmod
 
 # misc
