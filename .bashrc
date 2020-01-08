@@ -9,6 +9,19 @@ shopt -s histappend
 HISTSIZE=1000
 HISTFILESIZE=2000
 
+command_not_found_handle() {
+    if [ -x "venv/bin/$1" ]; then
+        echo 'you forgot to activate ./venv -- I gotchu' 1>&2
+        exe="venv/bin/$1"
+        shift
+        "$exe" "$@"
+        return $?
+    else
+        echo "$1: command not found" 1>&2
+        return 127
+    fi
+}
+
 PS1='\[\e]0;\u@\h: \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
