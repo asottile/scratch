@@ -1,4 +1,4 @@
-class cached_class_property(object):
+class cached_class_property:
     def __init__(self, fget):
         self.fget = classmethod(fget)
 
@@ -8,7 +8,7 @@ class cached_class_property(object):
         return val
 
 
-class Test(object):
+class Test:
     @cached_class_property
     def class_property(cls):
         print('Called class_property')
@@ -18,7 +18,7 @@ class Test(object):
 assert Test.class_property is Test.class_property
 
 
-class cached_static_property(object):
+class cached_static_property:
     def __init__(self, fget):
         self.fget = staticmethod(fget)
 
@@ -28,7 +28,7 @@ class cached_static_property(object):
         return val
 
 
-class Test2(object):
+class Test2:
     @cached_static_property
     def static_property():
         print('Called static_property')

@@ -1,48 +1,47 @@
-
-class NonDataDescriptor(object):
+class NonDataDescriptor:
     def __get__(self, obj, owner):
-        return '__get__ from {0!r}'.format(obj)
+        return f'__get__ from {obj!r}'
 
 
-class DataDescriptor(object):
+class DataDescriptor:
     def __get__(self, obj, owner):
-        return '__get__ from {0!r}'.format(obj)
+        return f'__get__ from {obj!r}'
 
     def __set__(self, value):
         print('got __set__ for value')
 
 
-class AlsoDataDescriptor(object):
+class AlsoDataDescriptor:
     def __get__(self, obj, owner):
-        return '__get__ from {0!r}'.format(obj)
+        return f'__get__ from {obj!r}'
 
     def __delete__(self, obj):
-        print('got __delete__ from {0}'.format(obj))
+        print(f'got __delete__ from {obj}')
 
 
-class Foo(object):
+class Foo:
     x = NonDataDescriptor()
 
 
-class Bar(object):
+class Bar:
     x = DataDescriptor()
 
 
-class Baz(object):
+class Baz:
     x = AlsoDataDescriptor()
 
 
 x = Foo()
-print('x.x before {0}'.format(x.x))
+print(f'x.x before {x.x}')
 x.__dict__['x'] = 'lololol'
-print('x.x after {0}'.format(x.x))
+print(f'x.x after {x.x}')
 
 y = Bar()
-print('y.x before {0}'.format(y.x))
+print(f'y.x before {y.x}')
 y.__dict__['x'] = 'lololol'
-print('y.x after {0}'.format(y.x))
+print(f'y.x after {y.x}')
 
 z = Baz()
-print('z.x before {0}'.format(z.x))
+print(f'z.x before {z.x}')
 z.__dict__['x'] = 'lololol'
-print('z.x after {0}'.format(z.x))
+print(f'z.x after {z.x}')

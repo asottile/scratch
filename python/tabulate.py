@@ -16,7 +16,7 @@ def tabulate(items):
 
     total_width = sum(widths) + field_count + 1
     line = '-' * total_width + '\n'
-    fmt = '|' + '|'.join('{{: >{}}}'.format(width) for width in widths) + '|\n'
+    fmt = '|' + '|'.join(f'{{: >{width}}}' for width in widths) + '|\n'
     lines = [fmt.format(*[str(x) for x in item]) for item in items] + ['']
     header_line = '=' * total_width + '\n'
     header = header_line + fmt.format(*columns) + header_line

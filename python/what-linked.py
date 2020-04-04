@@ -80,11 +80,11 @@ def dev_pkg(dpkg):
         pass
     try:
         output = out('apt-cache', 'rdepends', dpkg)
-        return ', '.join(sorted(set(
+        return ', '.join(sorted({
             line.strip()
             for line in output.splitlines()
             if line.strip().endswith('-dev')
-        ))) or '<<unknown>>'
+        })) or '<<unknown>>'
     except subprocess.CalledProcessError:
         return '<<unknown>>'
 
@@ -133,7 +133,7 @@ def main():
                     else:
                         dpkg = from_where(link)
                         dev = dev_pkg(dpkg)
-                        print('  - {} ({}) (try: {})'.format(link, dpkg, dev))
+                        print(f'  - {link} ({dpkg}) (try: {dev})')
 
 
 if __name__ == '__main__':

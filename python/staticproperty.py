@@ -1,4 +1,4 @@
-class staticproperty(object):
+class staticproperty:
     def __init__(self, fget):
         self.fget = fget
 
@@ -6,7 +6,7 @@ class staticproperty(object):
         return staticmethod(self.fget).__get__(None, owner)()
 
 
-class Foo(object):
+class Foo:
     @staticproperty
     def bar():
         print('hai')
