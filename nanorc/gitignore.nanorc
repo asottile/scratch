@@ -1,6 +1,0 @@
-syntax "gitignore" "\.(git|docker)ignore$"
-
-formatter vim -c :sort -c :wq -E -s
-
-# comments
-color brightred "^\s*#.*$"
