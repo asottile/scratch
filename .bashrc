@@ -35,7 +35,7 @@ PROMPT_COMMAND='if [ -d .git -a ! -x .git/hooks/pre-commit -a -e .pre-commit-con
 eval "$(aactivator init)"
 
 export PYTHONSTARTUP=~/.pythonrc.py
-export EDITOR=nano VISUAL=nano
+export EDITOR=babi VISUAL=babi
 
 export DEBEMAIL="asottile@umich.edu" DEBFULLNAME="Anthony Sottile"
 

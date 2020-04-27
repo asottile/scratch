@@ -11,7 +11,7 @@
     smtpencryption = tls
     smtpserverport = 587
 [ui]
-    editor = nano
+    editor = babi
 [user]
     name = Anthony Sottile
     email = asottile@umich.edu
