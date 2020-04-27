@@ -4,6 +4,9 @@ case $- in
       *) return;;
 esac
 
+# it's unclear why this changed between 18.04 and 20.04
+umask 0022
+
 HISTCONTROL=ignoreboth
 shopt -s histappend
 HISTSIZE=1000
