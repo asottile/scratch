@@ -12,19 +12,19 @@ repos:
     -   id: name-tests-test
     -   id: requirements-txt-fixer
 -   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.9
+    rev: 3.8.0
     hooks:
     -   id: flake8
 -   repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5
+    rev: v1.5.2
     hooks:
     -   id: autopep8
 -   repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.1.0
+    rev: v2.3.0
     hooks:
     -   id: reorder-python-imports
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v2.1.0
+    rev: v2.4.1
     hooks:
     -   id: pyupgrade
         args: [--py36-plus]
