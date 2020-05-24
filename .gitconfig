@@ -3,7 +3,6 @@
 [alias]
     comit = commit
     grpe = grep
-    gud = !echo lol why u so bad
 [color]
     ui = true
 [sendemail]
