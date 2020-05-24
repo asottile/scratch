@@ -3,6 +3,7 @@
 [alias]
     comit = commit
     grpe = grep
+    gud = !echo lol why u so bad
 [color]
     ui = true
 [sendemail]
@@ -15,3 +16,5 @@
 [user]
     name = Anthony Sottile
     email = asottile@umich.edu
+[completion]
+    commands = -gitk
