@@ -5,7 +5,7 @@ alias ls='ls --color=auto'
 # typos
 alias dc=cd
 alias grpe=grep
-alias nano=babi
+alias nano=~/opt/venv/bin/babi
 alias naon=babi
 alias chmox=chmod
 
