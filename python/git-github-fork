@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import urllib.request
 
 
@@ -17,7 +18,7 @@ def get_slug():
 def load_config():
     filename = os.path.expanduser('~/.github-auth.json')
     mode = os.stat(filename).st_mode & 0o777
-    if mode != 0o600:
+    if sys.platform != 'win32' and mode != 0o600:
         raise SystemExit(
             f'{filename} has too-permissive permissions, Expected 0o600, '
             f'got 0o{mode:o}',
