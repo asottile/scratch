@@ -1,31 +1,26 @@
-#!/usr/bin/env python3
 import argparse
 import contextlib
 import os.path
 import subprocess
-import tarfile
 import tempfile
+from typing import Generator
 
 
 @contextlib.contextmanager
-def create_container(img):
-    container = subprocess.check_output(('docker', 'create', img))
-    container = container.strip().decode()
+def create_container(img: str) -> Generator[str, None, None]:
+    cmd = ('docker', 'create', img)
+    container = subprocess.check_output(cmd).strip().decode()
     try:
         yield container
     finally:
         subprocess.check_call(('docker', 'rm', container))
 
 
-def _docker_export(container_id, tar):
+def _docker_export(container_id: str, tar: str) -> None:
     subprocess.check_call(('docker', 'export', '-o', tar, container_id))
 
 
-def _docker_cp(src, dest):
-    subprocess.check_call(('docker', 'cp', src, dest))
-
-
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--src', default='ubuntu:xenial')
     parser.add_argument('container')
@@ -36,18 +31,9 @@ def main():
             tar_filename = os.path.join(tmpdir, 'tar.gz')
             _docker_export(container_id, tar_filename)
 
-        with tarfile.open(tar_filename) as tar:
-            tar.extractall(tmpdir)
-        os.remove(tar_filename)
-
-        # these don't copy cleanly for some reason
-        os.remove(os.path.join(tmpdir, 'etc/hostname'))
-        os.remove(os.path.join(tmpdir, 'etc/hosts'))
-        os.remove(os.path.join(tmpdir, 'etc/resolv.conf'))
-        os.remove(os.path.join(tmpdir, 'var/run'))
-
-        for filename in os.listdir(tmpdir):
-            _docker_cp(os.path.join(tmpdir, filename), args.container + ':/')
+        with open(tar_filename, 'rb') as f:
+            cmd = ('docker', 'cp', '--extract', '-', f'{args.container}:/')
+            return subprocess.call(cmd, stdin=f)
 
 
 if __name__ == '__main__':
