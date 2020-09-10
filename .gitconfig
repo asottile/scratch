@@ -5,6 +5,10 @@
     grpe = grep
 [color]
     ui = true
+[completion]
+    commands = -gitk
+[fetch]
+    prune = true
 [sendemail]
     smtpuser = asottile
     smtpserver = smtp.mail.umich.edu
@@ -15,5 +19,3 @@
 [user]
     name = Anthony Sottile
     email = asottile@umich.edu
-[completion]
-    commands = -gitk
