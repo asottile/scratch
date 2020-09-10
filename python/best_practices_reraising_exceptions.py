@@ -1,31 +1,30 @@
-import functools
+import contextlib
 import sys
 import traceback
+from typing import Generator
+from typing import NoReturn
 
 
 class MyCustomError(RuntimeError):
     pass
 
 
-def g():
+def g() -> NoReturn:
     raise AssertionError('hi')
 
 
-def f():
+def f() -> NoReturn:
     g()
 
 
-def simulate_running(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception:
-            traceback.print_exc()
-    return wrapper
+@contextlib.contextmanager
+def simulate_running() -> Generator[None, None, None]:
+    try:
+        yield
+    except Exception:
+        traceback.print_exc()
 
 
-@simulate_running
 def test1():
     try:
         f()
@@ -33,7 +32,6 @@ def test1():
         raise MyCustomError(e)
 
 
-@simulate_running
 def test2():
     try:
         f()
@@ -44,12 +42,14 @@ def test2():
 
 def main():
     print('*' * 79)
-    test1()
+    with simulate_running():
+        test1()
     print('*' * 79)
     print('Notice how the stacktrace does not contain f() or g() at all')
     print('You can fix that however')
     print('*' * 79)
-    test2()
+    with simulate_running():
+        test2()
     print('*' * 79)
 
 
@@ -58,23 +58,24 @@ if __name__ == '__main__':
 
 
 OUTPUT = """\
-$ python3 python/best_practices_reraising_exceptions.py
 *******************************************************************************
 Traceback (most recent call last):
-  File "python/best_practices_reraising_exceptions.py", line 33, in test1
+  File "python/best_practices_reraising_exceptions.py", line 31, in test1
     f()
-  File "python/best_practices_reraising_exceptions.py", line 17, in f
+  File "python/best_practices_reraising_exceptions.py", line 18, in f
     g()
-  File "python/best_practices_reraising_exceptions.py", line 13, in g
+  File "python/best_practices_reraising_exceptions.py", line 14, in g
     raise AssertionError('hi')
 AssertionError: hi
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "python/best_practices_reraising_exceptions.py", line 24, in wrapper
-    return func(*args, **kwargs)
-  File "python/best_practices_reraising_exceptions.py", line 35, in test1
+  File "python/best_practices_reraising_exceptions.py", line 24, in simulate_running
+    yield
+  File "python/best_practices_reraising_exceptions.py", line 47, in main
+    test1()
+  File "python/best_practices_reraising_exceptions.py", line 33, in test1
     raise MyCustomError(e)
 MyCustomError: hi
 *******************************************************************************
@@ -82,27 +83,29 @@ Notice how the stacktrace does not contain f() or g() at all
 You can fix that however
 *******************************************************************************
 Traceback (most recent call last):
-  File "python/best_practices_reraising_exceptions.py", line 41, in test2
+  File "python/best_practices_reraising_exceptions.py", line 38, in test2
     f()
-  File "python/best_practices_reraising_exceptions.py", line 17, in f
+  File "python/best_practices_reraising_exceptions.py", line 18, in f
     g()
-  File "python/best_practices_reraising_exceptions.py", line 13, in g
+  File "python/best_practices_reraising_exceptions.py", line 14, in g
     raise AssertionError('hi')
 AssertionError: hi
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "python/best_practices_reraising_exceptions.py", line 24, in wrapper
-    return func(*args, **kwargs)
-  File "python/best_practices_reraising_exceptions.py", line 44, in test2
-    raise MyCustomError(e).with_traceback(exc_info[2])
+  File "python/best_practices_reraising_exceptions.py", line 24, in simulate_running
+    yield
+  File "python/best_practices_reraising_exceptions.py", line 53, in main
+    test2()
   File "python/best_practices_reraising_exceptions.py", line 41, in test2
+    raise MyCustomError(e).with_traceback(exc_info[2])
+  File "python/best_practices_reraising_exceptions.py", line 38, in test2
     f()
-  File "python/best_practices_reraising_exceptions.py", line 17, in f
+  File "python/best_practices_reraising_exceptions.py", line 18, in f
     g()
-  File "python/best_practices_reraising_exceptions.py", line 13, in g
+  File "python/best_practices_reraising_exceptions.py", line 14, in g
     raise AssertionError('hi')
 MyCustomError: hi
-*******************************************************************************
-"""
+******************************************************************************
+"""  # noqa: E501

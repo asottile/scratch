@@ -23,7 +23,7 @@ def print_sheet(sheet: List[List[Any]]) -> None:
     print('=' * (sum(widths) + len(widths) * 2 + 1))
 
 
-def main():
+def main() -> int:
     sheet = [
         [1, 2, 'C', 4, 5],
         [1, 4, 'B', 6, 7],
@@ -32,6 +32,7 @@ def main():
         [1, 2, 'A', 5, 6],
     ]
     print_sheet(sheet)
+    return 0
 
 
 if __name__ == '__main__':

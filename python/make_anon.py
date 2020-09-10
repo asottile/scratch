@@ -1,24 +1,26 @@
+import codecs
 import os
 import random
+from typing import Any
 
 
-def garbage_unicode():
-    return os.urandom(10).encode('hex').decode('UTF-8')
+def garbage_unicode() -> str:
+    return codecs.encode(os.urandom(10), 'hex').decode()
 
 
-def garbage_bytes():
+def garbage_bytes() -> bytes:
     return os.urandom(10)
 
 
-def garbage_int():
+def garbage_int() -> int:
     return random.randrange(0, 1000)
 
 
-def garbage_float():
+def garbage_float() -> float:
     return random.randrange(0, 1000) + random.random()
 
 
-def make_anon(obj):
+def make_anon(obj: Any) -> Any:
     if type(obj) is int:
         return garbage_int()
     elif type(obj) is float:

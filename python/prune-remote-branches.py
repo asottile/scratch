@@ -7,7 +7,7 @@ import subprocess
 HERE = os.path.dirname(os.path.realpath(__file__))
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--remote', default='')
@@ -41,6 +41,7 @@ def main():
         fr"grep -Ev '(\*|master)' | "
         fr'xargs --no-run-if-empty {dry_run}git branch --delete',
     ))
+    return 0
 
 
 if __name__ == '__main__':

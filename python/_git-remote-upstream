@@ -3,9 +3,12 @@ import argparse
 import getpass
 import json
 import subprocess
+from typing import Optional
+from typing import Sequence
+from typing import Tuple
 
 
-def remote_upstream(args_remote, args_upstream):
+def remote_upstream(args_remote: str, args_upstream: str) -> Tuple[str, str]:
     cmd = ('git', 'remote')
     remotes = subprocess.check_output(cmd, encoding='UTF-8').splitlines()
 
@@ -30,12 +33,13 @@ def remote_upstream(args_remote, args_upstream):
     return (remote, upstream)
 
 
-def main(argv=None):
+def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--remote')
     parser.add_argument('--upstream')
     args = parser.parse_args(argv)
     print(json.dumps(remote_upstream(args.remote, args.upstream)))
+    return 0
 
 
 if __name__ == '__main__':

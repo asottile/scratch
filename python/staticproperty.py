@@ -8,7 +8,7 @@ class staticproperty:
 
 class Foo:
     @staticproperty
-    def bar():
+    def bar():  # type: ignore
         print('hai')
         return 9001
 

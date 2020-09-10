@@ -30,7 +30,7 @@ class cached_static_property:
 
 class Test2:
     @cached_static_property
-    def static_property():
+    def static_property():  # type: ignore
         print('Called static_property')
         return object()
 
