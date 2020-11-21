@@ -12,6 +12,9 @@ alias nano=~/opt/venv/bin/babi
 alias naon=babi
 alias chmox=chmod
 
+# aws does not support --help
+alias aws=~/opt/venv/bin/awshelp
+
 # misc
 alias wtf="echo 'wtf indeed.'"
 alias cry='sh -c '"'"'echo ":'"'"'"'"'"'"'"'"'("'"'"''
