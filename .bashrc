@@ -20,7 +20,7 @@ command_not_found_handle() {
         "$exe" "$@"
         return $?
     else
-        echo "$1: command not found" 1>&2
+        echo "$0: $1: command not found" 1>&2
         return 127
     fi
 }
