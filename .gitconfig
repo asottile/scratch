@@ -2,6 +2,7 @@
     statusHints = false
 [alias]
     comit = commit
+    git = !git
     grpe = grep
 [color]
     ui = true
