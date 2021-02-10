@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import argparse
 import contextlib
 import os.path
@@ -80,11 +82,13 @@ def dev_pkg(dpkg):
         pass
     try:
         output = out('apt-cache', 'rdepends', dpkg)
-        return ', '.join(sorted({
-            line.strip()
-            for line in output.splitlines()
-            if line.strip().endswith('-dev')
-        })) or '<<unknown>>'
+        return ', '.join(
+            sorted({
+                line.strip()
+                for line in output.splitlines()
+                if line.strip().endswith('-dev')
+            }),
+        ) or '<<unknown>>'
     except subprocess.CalledProcessError:
         return '<<unknown>>'
 
@@ -127,9 +131,11 @@ def main():
             else:
                 for link in sorted(linked):
                     if link.startswith(download):
-                        print('  - {} (linked internally)'.format(
-                            os.path.relpath(link, download),
-                        ))
+                        print(
+                            '  - {} (linked internally)'.format(
+                                os.path.relpath(link, download),
+                            ),
+                        )
                     else:
                         dpkg = from_where(link)
                         dev = dev_pkg(dpkg)

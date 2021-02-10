@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+
 class staticproperty:
     def __init__(self, fget):
         self.fget = fget

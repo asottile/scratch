@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import string
 from typing import Any
-from typing import List
 
 
-def print_sheet(sheet: List[List[Any]]) -> None:
+def print_sheet(sheet: list[list[Any]]) -> None:
     widths = [1] * len(sheet[0])
     for row in sheet:
         for i, d in enumerate(row):

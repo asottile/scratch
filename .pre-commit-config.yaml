@@ -9,8 +9,6 @@ repos:
     -   id: check-added-large-files
     -   id: check-yaml
     -   id: debug-statements
-    -   id: name-tests-test
-    -   id: requirements-txt-fixer
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
     hooks:
@@ -23,11 +21,18 @@ repos:
     rev: v2.4.0
     hooks:
     -   id: reorder-python-imports
+        args: [--py38-plus, --add-import, 'from __future__ import annotations']
+        exclude: ^(\.pdbrc|\.pythonrc.py)$
+-   repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.1.0
+    hooks:
+    -   id: add-trailing-comma
+        args: [--py36-plus]
 -   repo: https://github.com/asottile/pyupgrade
     rev: v2.10.0
     hooks:
     -   id: pyupgrade
-        args: [--py36-plus]
+        args: [--py38-plus]
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.800
     hooks:

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import collections
 
 
@@ -25,9 +27,11 @@ def tabulate(items):
 
 if __name__ == '__main__':
     C = collections.namedtuple('C', ('foo', 'bar', 'baz'))
-    print(tabulate((
-        C('herp', 'derp', 'derp'),
-        C('herploooooooooooooooong', 'derp', 'derp'),
-        C('herp', 'derp', 'derp'),
-        C('herp', 'derp', 'derp'),
-    )))
+    print(
+        tabulate((
+            C('herp', 'derp', 'derp'),
+            C('herploooooooooooooooong', 'derp', 'derp'),
+            C('herp', 'derp', 'derp'),
+            C('herp', 'derp', 'derp'),
+        )),
+    )
