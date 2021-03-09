@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import argparse
-import contextlib
 import os.path
 import shutil
 import string
@@ -13,15 +12,6 @@ import tempfile
 
 def out(*cmd, **kwargs):
     return subprocess.check_output(cmd, **kwargs).decode('UTF-8')
-
-
-@contextlib.contextmanager
-def tmpdir():
-    tempdir = tempfile.mkdtemp()
-    try:
-        yield tempdir
-    finally:
-        shutil.rmtree(tempdir)
 
 
 def get_shared_objects(pkg):
@@ -102,7 +92,7 @@ def main():
 
     uninteresting_links = get_uninteresting_links()
 
-    with tmpdir() as tempdir:
+    with tempfile.TemporaryDirectory() as tempdir:
         download = os.path.join(tempdir, 'download')
         os.makedirs(download)
         if os.path.exists(args.package):
