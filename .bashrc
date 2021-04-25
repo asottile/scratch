@@ -9,8 +9,8 @@ umask 0022
 
 HISTCONTROL=ignoreboth
 shopt -s histappend
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=-1
+HISTFILESIZE=-1
 
 command_not_found_handle() {
     if [ -x "venv/bin/$1" ]; then
