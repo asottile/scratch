@@ -58,4 +58,4 @@ def main(argv: Sequence[str] | None = None) -> NoReturn:
 
 
 if __name__ == '__main__':
-    exit(main())
+    raise SystemExit(main())
