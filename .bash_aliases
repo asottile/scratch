@@ -8,7 +8,7 @@ alias tf=terraform
 # typos
 alias dc=cd
 alias grpe=grep
-alias nano=~/opt/venv/bin/babi
+alias nano=~/bin/babi
 alias naon=babi
 alias chmox=chmod
 
