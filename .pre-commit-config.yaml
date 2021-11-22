@@ -24,12 +24,12 @@ repos:
         args: [--py38-plus, --add-import, 'from __future__ import annotations']
         exclude: ^(\.pdbrc|\.pythonrc.py)$
 -   repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
     -   id: add-trailing-comma
         args: [--py36-plus]
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v2.29.0
+    rev: v2.29.1
     hooks:
     -   id: pyupgrade
         args: [--py38-plus]
