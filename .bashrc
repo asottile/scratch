@@ -34,7 +34,7 @@ PS1='\[\e]0;\u@\h: \w\a\]\[\033[1;92m\]\u@\h\[\033[m\]:\[\033[1;94m\]\w\[\033[m\
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 [ -d "$HOME/bin" ] && export PATH="${HOME}/bin:${PATH}"
 
-PROMPT_COMMAND='if [ -d .git -a ! -x .git/hooks/pre-commit -a -e .pre-commit-config.yaml ] && which pre-commit >& /dev/null; then pre-commit install; fi; '"$PROMPT_COMMAND"
+PROMPT_COMMAND='if [ -d .git -a ! -x .git/hooks/pre-commit -a -e .pre-commit-config.yaml ] && command -v pre-commit >& /dev/null; then pre-commit install; fi; '"$PROMPT_COMMAND"
 eval "$(aactivator init)"
 
 export PYTHONSTARTUP=~/.pythonrc.py
