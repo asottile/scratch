@@ -42,6 +42,9 @@ export EDITOR=babi VISUAL=babi
 
 export DEBEMAIL="asottile@umich.edu" DEBFULLNAME="Anthony Sottile"
 
+export PIP_DISABLE_PIP_VERSION_CHECK=1
+export VIRTUALENV_NO_PERIODIC_UPDATE=1
+
 if [ -d ~/.bashrc.d ]; then
     for f in ~/.bashrc.d/*.sh; do
         . "$f"
