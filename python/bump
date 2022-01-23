@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import os.path
+import subprocess
+
+
+def _default_branch() -> str:
+    cmd = ('git', 'symbolic-ref', '--short', 'refs/remotes/origin/HEAD')
+    name = subprocess.check_output(cmd).strip().decode()
+    _, _, ret = name.partition('/')
+    return ret
+
+
+def _remote() -> str:
+    cmd = ('git', 'config', 'remote.origin.url')
+    remote = subprocess.check_output(cmd).strip().decode()
+    if not remote.startswith('git@github.com:'):
+        raise SystemExit(f'unexpected remote: {remote!r}')
+    if remote.endswith('.git'):
+        raise SystemExit(f'unexpected remote: {remote!r}')
+    return remote[len('git@github.com:'):]
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--dry-run', action='store_true')
+    mutex = parser.add_mutually_exclusive_group(required=True)
+    mutex.add_argument('--major', action='store_true')
+    mutex.add_argument('--minor', action='store_true')
+    mutex.add_argument('--patch', action='store_true')
+    args = parser.parse_args()
+
+    print('\033[2mfetching origin...\033[m')
+    subprocess.check_call(('git', 'fetch', '-q', 'origin'))
+    branch = _default_branch()
+    print(f'\033[2mchecking out {branch}...\033[m')
+    subprocess.check_call(('git', 'checkout', '-q', branch))
+    print('\033[2mupdating to origin/HEAD...\033[m')
+    subprocess.check_call(('git', 'merge', '-q', '--ff-only', 'origin/HEAD'))
+    print('\033[2mdiscarding changes...\033[m')
+    subprocess.check_call(('git', 'reset', '-q', '--', '.'))
+    subprocess.check_call(('git', 'checkout', '-q', '--', '.'))
+    print('\033[2mclearing build/ and dist/...\033[m')
+    subprocess.check_call(('rm', '-rf', 'build/', 'dist/'))
+
+    with open('setup.cfg') as f:
+        setup_cfg_lines = list(f)
+
+    for version_idx, line in enumerate(setup_cfg_lines):
+        if line.startswith('version ='):
+            version_s = line.split(' = ')[1].strip()
+            break
+    else:
+        raise SystemExit('could not find `version =` in setup.cfg')
+
+    v_major_s, v_minor_s, v_patch_s = version_s.split('.')
+    v_major, v_minor, v_patch = int(v_major_s), int(v_minor_s), int(v_patch_s)
+
+    if args.major:
+        v_major += 1
+        v_minor = v_patch = 0
+    elif args.minor:
+        v_minor += 1
+        v_patch = 0
+    else:
+        v_patch += 1
+    new_version = f'{v_major}.{v_minor}.{v_patch}'
+
+    remote = _remote()
+
+    if not os.path.exists('.pre-commit-config.yaml'):
+        raise SystemExit('expected .pre-commit-config.yaml')
+
+    with open('.pre-commit-config.yaml') as f:
+        pre_commit_lines = list(f)
+
+    for repo_idx, line in enumerate(pre_commit_lines):
+        if line.startswith('-   repo:') and remote in line:
+            pre_commit_found = True
+            break
+    else:
+        pre_commit_found = False
+
+    if not os.path.exists('README.md'):
+        raise SystemExit('expected README.md')
+
+    with open('README.md') as f:
+        readme_lines = list(f)
+
+    for readme_repo_idx, line in enumerate(readme_lines):
+        if line.startswith('-   repo') and remote in line:
+            readme_found = True
+            break
+    else:
+        readme_found = False
+
+    with open('setup.py') as f:
+        for line in f:
+            if 'cffi_modules' in line or 'ext_modules' in line:
+                bdist = False
+        else:
+            bdist = True
+
+    print('\033[1mversion bump information:\033[m')
+    print(f'- remote: {remote}')
+    print(f'- setup.cfg: {version_s} -> \033[7m{new_version}\033[m')
+    if pre_commit_found:
+        print('- .pre-commit-config.yaml: \033[7mwill update\033[m')
+    if readme_found:
+        print('- README.md: \033[7mwill update\033[m')
+
+    if args.dry_run:
+        print('\033[2mexiting without changes due to --dry-run\033[m')
+        return 0
+
+    setup_cfg_lines[version_idx] = f'version = {new_version}\n'
+    with open('setup.cfg', 'w') as f:
+        f.writelines(setup_cfg_lines)
+
+    if pre_commit_found:
+        pre_commit_lines[repo_idx + 1] = f'    rev: v{new_version}\n'
+        with open('.pre-commit-config.yaml', 'w') as f:
+            f.writelines(pre_commit_lines)
+
+    if readme_found:
+        readme_lines[readme_repo_idx + 1] = f'    rev: v{new_version}\n'
+        with open('README.md', 'w') as f:
+            f.writelines(readme_lines)
+
+    print('\033[2mcommitting...\033[m')
+    subprocess.check_call(('git', 'commit', '-qnam', f'v{new_version}'))
+
+    print('\033[2mtagging...\033[m')
+    subprocess.check_call(('git', 'tag', f'v{new_version}'))
+
+    print('\033[2mbuilding distributions...\033[m')
+    dists = ('sdist', 'bdist_wheel') if bdist else ('sdist',)
+    python = os.path.expanduser('~/opt/venv/bin/python')
+    build_cmd = (python, 'setup.py', '-q', *dists)
+    subprocess.check_call(build_cmd, stderr=subprocess.DEVNULL)
+
+    print('\033[2muploading to pypi...\033[m')
+    dist_files = os.listdir('dist')
+    dist_files = [os.path.join('dist', fname) for fname in dist_files]
+    subprocess.check_call(('twine', 'upload', '-r', 'pypi', *dist_files))
+
+    print('\033[2mpushing branch + tags...\033[m')
+    return subprocess.call(('git', 'push', '-q', 'origin', 'HEAD', '--tags'))
+
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
