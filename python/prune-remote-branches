@@ -35,7 +35,7 @@ def main() -> int:
         f"cut -d'/' -f2- | "
         f"grep -Ev '^(PLACEHOLDER|main|master|stage|production)' | "
         f"grep -v '>' | "
-        f"xargs --replace -P 8 {dry_run}git push {remote} :{{}}",
+        f'xargs --replace -P 8 {dry_run}git push {remote} :{{}}',
     ))
     subprocess.check_call((
         'bash', '-c',
