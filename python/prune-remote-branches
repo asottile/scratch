@@ -23,26 +23,45 @@ def main() -> int:
     remote, upstream = json.loads(subprocess.check_output(cmd))
 
     if args.dry_run:
-        dry_run = 'echo '
+        dry_run: tuple[str, ...] = ('echo',)
     else:
-        dry_run = ''
+        dry_run = ()
 
-    subprocess.check_call((
-        'bash', '-c',
-        f'git fetch --all --prune && '
-        f'git branch --remote --merged {upstream}/HEAD | '
-        f'grep {remote}/ | '
-        f"cut -d'/' -f2- | "
-        f"grep -Ev '^(PLACEHOLDER|main|master|stage|production)' | "
-        f"grep -v '>' | "
-        f'xargs --replace -P 8 {dry_run}git push {remote} :{{}}',
+    subprocess.check_call(('git', 'fetch', '--all', '--quiet'))
+
+    r_merged_output = subprocess.check_output((
+        'git', 'branch', '--remote', '--merged', f'{upstream}/HEAD',
+        '--format=%(refname:lstrip=2)',
     ))
-    subprocess.check_call((
-        'bash', '-c',
-        fr'git branch --merged {upstream}/HEAD | '
-        fr"grep -Ev '(\*|main|master)' | "
-        fr'xargs --no-run-if-empty {dry_run}git branch --delete',
+    r_merged = [
+        line.split('/', 1)[1]
+        for line in r_merged_output.decode().splitlines()
+        if line.startswith(f'{remote}/')
+    ]
+    r_merged = [
+        branch for branch in r_merged
+        if branch not in {'HEAD', 'main', 'master'}
+    ]
+    if r_merged:
+        remote_cmd = (*dry_run, 'git', 'push', remote, '--delete', *r_merged)
+        subprocess.check_call(remote_cmd)
+
+    l_merged_output = subprocess.check_output((
+        'git', 'branch', '--merged', f'{upstream}/HEAD',
+        '--format=%(HEAD)\t%(refname:lstrip=2)',
     ))
+    l_merged_info = [
+        line.split('\t')
+        for line in l_merged_output.decode().splitlines()
+    ]
+    l_merged = [
+        branch for head, branch in l_merged_info
+        if head == ' ' and branch not in {'main', 'master'}
+    ]
+    if l_merged:
+        local_cmd = (*dry_run, 'git', 'branch', '--delete', *l_merged)
+        subprocess.check_call(local_cmd)
+
     return 0
 
 
