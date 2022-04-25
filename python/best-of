@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import subprocess
+import sys
+import time
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', type=int, default=10)
+    parser.add_argument('cmd', nargs='+')
+    args = parser.parse_args()
+
+    best: float = sys.maxsize
+    for _ in range(args.n):
+        t0 = time.monotonic()
+        subprocess.call(args.cmd)
+        t1 = time.monotonic()
+        best = min(best, t1 - t0)
+        print('.', end='', flush=True)
+    print()
+    print(f'best of {args.n}: {best:.3f}s')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
