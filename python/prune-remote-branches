@@ -29,6 +29,12 @@ def main() -> int:
 
     subprocess.check_call(('git', 'fetch', '--all', '--quiet'))
 
+    # if origin/HEAD has never been set, set it automatically
+    head_cmd = ('git', 'rev-parse', '--quiet', '--verify', f'{upstream}/HEAD')
+    if subprocess.call(head_cmd, stdout=subprocess.DEVNULL):
+        set_head_cmd = ('git', 'remote', 'set-head', upstream, '--auto')
+        subprocess.check_call(set_head_cmd)
+
     r_merged_output = subprocess.check_output((
         'git', 'branch', '--remote', '--merged', f'{upstream}/HEAD',
         '--format=%(refname:lstrip=2)',
