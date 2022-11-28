@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import fractions
+import re
+import subprocess
+
+REG = re.compile(r'\s+w(?:Width|Height)\s+(\d+)')
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument('device', help='like 002:004 from lsusb')
+    args = parser.parse_args()
+
+    output = subprocess.check_output(
+        ('lsusb', '-s', args.device, '-v'),
+        stderr=subprocess.STDOUT,
+    )
+
+    values = []
+    for line in output.decode().splitlines():
+        match = REG.match(line)
+        if match:
+            values.append(int(match[1]))
+
+    for w, h in zip(values[0::2], values[1::2]):
+        print(f'{w}\t{h}\t{fractions.Fraction(w, h)}\t{w/h:.3f}')
+
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
