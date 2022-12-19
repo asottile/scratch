@@ -32,6 +32,12 @@ def main() -> int:
     mutex.add_argument('--patch', action='store_true')
     args = parser.parse_args()
 
+    # if origin/HEAD has never been set, set it automatically
+    head_cmd = ('git', 'rev-parse', '--quiet', '--verify', 'origin/HEAD')
+    if subprocess.call(head_cmd, stdout=subprocess.DEVNULL):
+        set_head_cmd = ('git', 'remote', 'set-head', 'origin', '--auto')
+        subprocess.check_call(set_head_cmd)
+
     print('\033[2mfetching origin...\033[m')
     subprocess.check_call(('git', 'fetch', '-q', 'origin'))
     branch = _default_branch()
