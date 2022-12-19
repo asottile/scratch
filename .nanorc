@@ -4,7 +4,6 @@ set tabsize 4
 set tabstospaces
 set regexp
 set nohelp
-set morespace
 
 unset locking
 unbind ^J main
