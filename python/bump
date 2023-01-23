@@ -151,7 +151,8 @@ def main() -> int:
     print('\033[2muploading to pypi...\033[m')
     dist_files = os.listdir('dist')
     dist_files = [os.path.join('dist', fname) for fname in dist_files]
-    subprocess.check_call(('twine', 'upload', '-r', 'pypi', *dist_files))
+    if subprocess.call(('twine', 'upload', '-r', 'pypi', *dist_files)):
+        return 1
 
     print('\033[2mpushing branch + tags...\033[m')
     return subprocess.call(('git', 'push', '-q', 'origin', 'HEAD', '--tags'))
