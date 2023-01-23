@@ -10,6 +10,8 @@
     commands = -gitk
 [fetch]
     prune = true
+[grep]
+    extendedRegexp = true
 [init]
     defaultBranch = main
 [sendemail]
