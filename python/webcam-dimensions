@@ -26,7 +26,7 @@ def main() -> int:
             values.append(int(match[1]))
 
     for w, h in zip(values[0::2], values[1::2]):
-        print(f'{w}\t{h}\t{fractions.Fraction(w, h)}\t{w/h:.3f}')
+        print(f'{w}\t{h}\t{fractions.Fraction(w, h)}\t{w / h:.3f}')
 
     return 0
 
