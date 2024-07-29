@@ -9,7 +9,7 @@ from typing import Generator
 
 
 @contextlib.contextmanager
-def create_container(img: str) -> Generator[str, None, None]:
+def create_container(img: str) -> Generator[str]:
     cmd = ('docker', 'create', img)
     container = subprocess.check_output(cmd).strip().decode()
     try:

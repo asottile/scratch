@@ -20,7 +20,7 @@ def f() -> NoReturn:
 
 
 @contextlib.contextmanager
-def simulate_running() -> Generator[None, None, None]:
+def simulate_running() -> Generator[None]:
     try:
         yield
     except Exception:
