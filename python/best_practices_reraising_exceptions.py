@@ -3,7 +3,7 @@ from __future__ import annotations
 import contextlib
 import sys
 import traceback
-from typing import Generator
+from collections.abc import Generator
 from typing import NoReturn
 
 

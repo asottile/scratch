@@ -5,7 +5,7 @@ import argparse
 import getpass
 import json
 import subprocess
-from typing import Sequence
+from collections.abc import Sequence
 
 
 def remote_upstream(args_remote: str, args_upstream: str) -> tuple[str, str]:

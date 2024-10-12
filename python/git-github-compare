@@ -5,7 +5,7 @@ import argparse
 import json
 import os.path
 import subprocess
-from typing import Sequence
+from collections.abc import Sequence
 
 HERE = os.path.dirname(os.path.realpath(__file__))
 SSH = 'git@github.com:'
