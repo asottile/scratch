@@ -7,8 +7,8 @@ import os
 import subprocess
 import sys
 import urllib.request
+from collections.abc import Sequence
 from typing import NoReturn
-from typing import Sequence
 
 
 def get_slug() -> str:
