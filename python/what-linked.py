@@ -8,23 +8,32 @@ import string
 import subprocess
 import sys
 import tempfile
+from collections.abc import Generator
 
 
 def out(*cmd, **kwargs):
     return subprocess.check_output(cmd, **kwargs).decode('UTF-8')
 
 
-def get_shared_objects(pkg):
-    try:
-        return out('dpkg', '-L', pkg).splitlines()
-    except subprocess.CalledProcessError:
-        return
+def get_shared_objects(pkg: str) -> list[str]:
+    return out('dpkg', '-L', pkg).splitlines()
+
+
+def _expand_deps(*pkgs: str) -> Generator[str]:
+    pkgs = ('libc6', 'libstdc++6')
+    for line in out('apt-cache', 'depends', '--important', *pkgs).splitlines():
+        if line.startswith('  Depends: '):
+            yield line.removeprefix('  Depends: ')
+        elif not line.startswith('  '):
+            yield line
+        else:
+            raise AssertionError(f'unexpected: {line}')
 
 
 def get_uninteresting_links():
     # This is auto-linked always
     uninteresting = {'linux-vdso.so.1'}
-    for pkg in ('libc6', 'libstdc++6', 'libgcc1'):
+    for pkg in _expand_deps('libc6', 'libstdc++6'):
         uninteresting.update(get_shared_objects(pkg))
     return uninteresting
 
