@@ -5,20 +5,13 @@ import argparse
 import subprocess
 
 
-SSH = 'git@github.com:'
-DOT_GIT = '.git'
-
-
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.parse_args(argv)
 
     cmd = ('git', 'config', 'remote.origin.url')
     remote = subprocess.check_output(cmd, encoding='UTF-8').strip()
-    if remote.startswith(SSH):
-        remote = remote[len(SSH):]
-    if remote.endswith(DOT_GIT):
-        remote = remote[:-1 * len(DOT_GIT)]
+    remote = remote.removeprefix('git@github.com:').removesuffix('.git')
 
     print(f'https://github.com/{remote}')
 

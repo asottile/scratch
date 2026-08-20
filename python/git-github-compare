@@ -8,8 +8,6 @@ import subprocess
 from collections.abc import Sequence
 
 HERE = os.path.dirname(os.path.realpath(__file__))
-SSH = 'git@github.com:'
-DOT_GIT = '.git'
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -25,17 +23,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     remote, upstream = json.loads(subprocess.check_output(cmd))
 
     url_cmd = ('git', 'config', f'remote.{upstream}.url')
-    remote_url = subprocess.check_output(url_cmd).decode().strip()
-    if remote_url.startswith(SSH):
-        remote_url = remote_url[len(SSH):]
-    if remote_url.endswith(DOT_GIT):
-        remote_url = remote_url[:-1 * len(DOT_GIT)]
+    slug = subprocess.check_output(url_cmd).decode().strip()
+    slug = slug.removeprefix('git@github.com:').removesuffix('.git')
 
     branch_cmd = ('git', 'rev-parse', '--abbrev-ref', 'HEAD')
     branch_name = subprocess.check_output(branch_cmd).decode().strip()
     if remote != upstream:
         branch_name = f'{remote}:{branch_name}'
-    print(f'https://github.com/{remote_url}/compare/{branch_name}?expand=1')
+    print(f'https://github.com/{slug}/compare/{branch_name}?expand=1')
     return 0
 
 
