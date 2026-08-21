@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import shlex
+import subprocess
+
+
+def _run(*cmd: str) -> None:
+    print(f'$ {shlex.join(cmd)}')
+    subprocess.check_call(cmd)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('arg', help='name:branch from ui')
+    args = parser.parse_args(argv)
+
+    user, branch = args.arg.split(':')
+
+    cmd = ('git', 'config', 'remote.origin.url')
+    remote = subprocess.check_output(cmd, encoding='UTF-8').strip()
+    remote = remote.removeprefix('git@github.com:').removesuffix('.git')
+    _, reponame = remote.split('/')
+
+    exists_cmd = ('git', 'remote', 'get-url', user)
+    print(f'$ {shlex.join(exists_cmd)}')
+    exists = subprocess.call(
+        exists_cmd,
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL,
+    )
+
+    if exists != 0:
+        remote_url = f'git@github.com:{user}/{reponame}'
+        _run('git', 'remote', 'add', user, remote_url)
+
+    _run('git', 'fetch', '--all')
+
+    if branch == 'main':
+        target = f'{user}__{branch}'
+    else:
+        target = branch
+
+    _run('git', 'checkout', f'{user}/{branch}', '-b', target)
+    _run('git', 'branch', '-u', 'origin/HEAD')
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
