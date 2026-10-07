@@ -1,7 +1,5 @@
 # Add the following to ~/.bash_profile
 # export PYTHONSTARTUP=~/.pythonrc.py
-from __future__ import annotations
-
 import readline
 import rlcompleter  # imported purely for side-effects
 

@@ -1,6 +1,4 @@
 """Greedily find an environment subset which allows a command to pass."""
-from __future__ import annotations
-
 import os
 import subprocess
 
