@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-
 class cached_class_property:
     def __init__(self, fget):
         self.fget = classmethod(fget)

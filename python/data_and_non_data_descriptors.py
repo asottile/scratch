@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-
 class NonDataDescriptor:
     def __get__(self, obj, owner):
         return f'__get__ from {obj!r}'
