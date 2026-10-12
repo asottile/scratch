@@ -1,5 +1,4 @@
 import contextlib
-import sys
 import traceback
 from collections.abc import Generator
 from typing import NoReturn
@@ -36,8 +35,7 @@ def test2():
     try:
         f()
     except AssertionError as e:
-        exc_info = sys.exc_info()
-        raise MyCustomError(e).with_traceback(exc_info[2])
+        raise MyCustomError(e).with_traceback(e.__traceback__)
 
 
 def main():
@@ -99,7 +97,7 @@ Traceback (most recent call last):
   File "python/best_practices_reraising_exceptions.py", line 53, in main
     test2()
   File "python/best_practices_reraising_exceptions.py", line 41, in test2
-    raise MyCustomError(e).with_traceback(exc_info[2])
+    raise MyCustomError(e).with_traceback(e.__traceback__)
   File "python/best_practices_reraising_exceptions.py", line 38, in test2
     f()
   File "python/best_practices_reraising_exceptions.py", line 18, in f
